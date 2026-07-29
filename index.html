@@ -3,668 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Cinemastream - Premium Streaming</title>
-    
-    <!-- SEO & Meta -->
-    <meta name="description" content="Cinemastream - Next-generation streaming platform with ad-free content">
-    <meta name="theme-color" content="#09090b">
+    <title>Flixer - Watch Trailers</title>
     
     <!-- Fonts & Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Plyr CSS -->
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-    
-    <!-- Custom Styles -->
-    <style>
-        /* ==================== GLOBAL STYLES ==================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        :root {
-            --cinema-black: #09090b;
-            --netflix-red: #e50914;
-            --netflix-red-hover: #f40612;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.7);
-            --text-muted: rgba(255, 255, 255, 0.5);
-            --gradient-overlay: linear-gradient(180deg, 
-                rgba(9, 9, 11, 0) 0%, 
-                rgba(9, 9, 11, 0.8) 50%, 
-                var(--cinema-black) 100%
-            );
-        }
-        
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--cinema-black);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        
-        /* ==================== SCROLLBAR STYLING ==================== */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: var(--cinema-black);
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: var(--netflix-red);
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--netflix-red-hover);
-        }
-        
-        /* ==================== GLASSMORPHISM ==================== */
-        .glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-        }
-        
-        .glass-light {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        /* ==================== HERO SECTION ==================== */
-        .hero-backdrop {
-            position: relative;
-            min-height: 80vh;
-            background-size: cover;
-            background-position: center top;
-            background-repeat: no-repeat;
-            transition: background-image 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .hero-backdrop::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 70%;
-            background: linear-gradient(
-                to top,
-                var(--cinema-black) 0%,
-                rgba(9, 9, 11, 0.8) 40%,
-                rgba(9, 9, 11, 0.2) 70%,
-                transparent 100%
-            );
-            pointer-events: none;
-        }
-        
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            padding: 4rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            min-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-        }
-        
-        .hero-logo {
-            max-width: 400px;
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-            margin-bottom: 1rem;
-        }
-        
-        .hero-title {
-            font-size: clamp(2.5rem, 6vw, 5rem);
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            line-height: 1.1;
-            margin-bottom: 0.5rem;
-        }
-        
-        .hero-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem 1.5rem;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-        }
-        
-        .hero-meta span {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .hero-meta .badge {
-            background: var(--netflix-red);
-            color: white;
-            padding: 0.15rem 0.75rem;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        
-        .hero-synopsis {
-            max-width: 600px;
-            font-size: clamp(0.95rem, 1.2vw, 1.2rem);
-            color: var(--text-secondary);
-            line-height: 1.6;
-            margin-bottom: 2rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        
-        .hero-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        
-        .btn-primary {
-            background: var(--netflix-red);
-            color: white;
-            padding: 0.75rem 2.5rem;
-            border-radius: 4px;
-            font-weight: 600;
-            font-size: 1rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            text-decoration: none;
-        }
-        
-        .btn-primary:hover {
-            background: var(--netflix-red-hover);
-            transform: scale(1.03);
-            box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4);
-        }
-        
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            padding: 0.75rem 2.5rem;
-            border-radius: 4px;
-            font-weight: 600;
-            font-size: 1rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: scale(1.03);
-        }
-        
-        /* ==================== CAROUSEL ==================== */
-        .carousel-container {
-            position: relative;
-            padding: 0 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .carousel-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            padding-left: 0.5rem;
-        }
-        
-        .carousel-track {
-            display: flex;
-            gap: 0.5rem;
-            overflow-x: auto;
-            overflow-y: hidden;
-            padding: 0.5rem 0 1.5rem;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-        
-        .carousel-track::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .carousel-item {
-            flex: 0 0 auto;
-            width: clamp(150px, 15vw, 280px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            position: relative;
-            border-radius: 8px;
-            overflow: hidden;
-            will-change: transform;
-        }
-        
-        .carousel-item:hover {
-            transform: scale(1.05) translateY(-5px);
-            z-index: 10;
-        }
-        
-        .carousel-item img {
-            width: 100%;
-            height: auto;
-            aspect-ratio: 2/3;
-            object-fit: cover;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .carousel-item .item-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 1.5rem 0.75rem 0.75rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .carousel-item:hover .item-info {
-            opacity: 1;
-        }
-        
-        .carousel-item .item-info h4 {
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-        
-        .carousel-item .item-info p {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-        
-        /* Carousel Buttons */
-        .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 20;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-        
-        .carousel-btn:hover {
-            background: var(--netflix-red);
-            transform: translateY(-50%) scale(1.1);
-        }
-        
-        .carousel-btn.left { left: 0.5rem; }
-        .carousel-btn.right { right: 0.5rem; }
-        
-        /* ==================== VIDEO PLAYER ==================== */
-        .player-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(20px);
-        }
-        
-        .player-container.active {
-            display: flex;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .player-wrapper {
-            width: 95%;
-            max-width: 1200px;
-            position: relative;
-        }
-        
-        .player-wrapper .plyr {
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
-        }
-        
-        .close-player {
-            position: absolute;
-            top: -50px;
-            right: 0;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-        
-        .close-player:hover {
-            transform: rotate(90deg);
-            color: var(--netflix-red);
-        }
-        
-        /* ==================== SEARCH ==================== */
-        .search-container {
-            padding: 1rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .search-input-wrapper {
-            position: relative;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .search-input-wrapper input {
-            width: 100%;
-            padding: 0.75rem 1rem 0.75rem 3rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            color: white;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .search-input-wrapper input:focus {
-            outline: none;
-            border-color: var(--netflix-red);
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 30px rgba(229, 9, 20, 0.1);
-        }
-        
-        .search-input-wrapper input::placeholder {
-            color: var(--text-muted);
-        }
-        
-        .search-input-wrapper i {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-        }
-        
-        /* ==================== ANIMATIONS ==================== */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .animate-slide-up {
-            animation: slideUp 0.6s ease forwards;
-        }
-        
-        /* ==================== EPISODE GRID ==================== */
-        .episode-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 0.75rem;
-            margin-top: 1rem;
-        }
-        
-        .episode-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 0.75rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-            font-size: 0.9rem;
-        }
-        
-        .episode-btn:hover {
-            background: var(--netflix-red);
-            transform: scale(1.03);
-            border-color: var(--netflix-red);
-        }
-        
-        .episode-btn.active {
-            background: var(--netflix-red);
-            border-color: var(--netflix-red);
-        }
-        
-        /* ==================== RESPONSIVE ==================== */
-        @media (max-width: 768px) {
-            .hero-content {
-                padding: 2rem 1rem;
-                min-height: 60vh;
-            }
-            
-            .hero-title {
-                font-size: clamp(2rem, 8vw, 3rem);
-            }
-            
-            .hero-actions {
-                flex-direction: column;
-                width: 100%;
-            }
-            
-            .hero-actions .btn-primary,
-            .hero-actions .btn-secondary {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .carousel-container {
-                padding: 0 1rem;
-            }
-            
-            .carousel-item {
-                width: clamp(120px, 30vw, 200px);
-            }
-            
-            .search-container {
-                padding: 0.5rem 1rem;
-            }
-            
-            .player-wrapper {
-                width: 100%;
-            }
-            
-            .close-player {
-                top: -40px;
-                font-size: 1.5rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .hero-backdrop {
-                min-height: 50vh;
-            }
-            
-            .hero-content {
-                min-height: 50vh;
-            }
-            
-            .carousel-item {
-                width: clamp(100px, 40vw, 160px);
-            }
-            
-            .episode-grid {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            }
-        }
-        
-        /* ==================== LOADING SPINNER ==================== */
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top-color: var(--netflix-red);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* ==================== NAVIGATION ==================== */
-        .nav-bar {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(9, 9, 11, 0.9);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 0.75rem 2rem;
-        }
-        
-        .nav-bar .nav-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .nav-brand {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--netflix-red);
-            text-decoration: none;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-        
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-        
-        .nav-links a:hover {
-            color: white;
-        }
-        
-        @media (max-width: 768px) {
-            .nav-bar {
-                padding: 0.5rem 1rem;
-            }
-            
-            .nav-links {
-                gap: 1rem;
-            }
-            
-            .nav-links a {
-                font-size: 0.8rem;
-            }
-        }
-    </style>
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ==================== NAVIGATION ==================== -->
-<nav class="nav-bar">
-    <div class="nav-content">
-        <a href="#" class="nav-brand">
-            <i class="fas fa-play-circle"></i> CINEMASTREAM
-        </a>
-        <div class="nav-links">
-            <a href="#home">Home</a>
-            <a href="#movies">Movies</a>
-            <a href="#tv">TV Shows</a>
-            <a href="#" onclick="toggleSearch()">
-                <i class="fas fa-search"></i>
-            </a>
+<!-- ============================================================
+LOGIN OVERLAY
+============================================================ -->
+<div id="loginOverlay">
+    <div class="login-container">
+        <div class="logo">🎬 FLIXER</div>
+        <div class="subtitle">Watch official trailers & previews</div>
+
+        <div id="loginError" class="login-error">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>Invalid username or passcode.</span>
+        </div>
+
+        <div id="loginBlocked" class="login-blocked">
+            <i class="fas fa-lock"></i>
+            <span>Account blocked. Try again later.</span>
+        </div>
+
+        <label for="loginUsername">Username</label>
+        <input type="text" id="loginUsername" placeholder="Enter your username" />
+
+        <label for="loginPasscode">Passcode</label>
+        <div class="password-wrapper">
+            <input type="password" id="loginPasscode" placeholder="Enter your passcode" />
+            <button type="button" class="toggle-pw" id="togglePassword">
+                <i class="fas fa-eye"></i>
+            </button>
+        </div>
+
+        <div id="loginAttemptsDisplay" class="login-attempts"></div>
+
+        <button class="login-btn" id="loginBtn">
+            <span class="btn-text">🔑 Sign In</span>
+            <span class="btn-loader"></span>
+        </button>
+
+        <div style="margin-top:16px;text-align:center;font-size:12px;color:var(--text-muted);">
+            Default: <strong>admin</strong> / <strong>1234</strong>
         </div>
     </div>
-</nav>
-
-<!-- ==================== SEARCH ==================== -->
-<div class="search-container" id="searchContainer" style="display: none;">
-    <div class="search-input-wrapper">
-        <i class="fas fa-search"></i>
-        <input 
-            type="text" 
-            id="searchInput" 
-            placeholder="Search movies, TV shows, actors..."
-            oninput="handleSearch(this.value)"
-        />
-    </div>
-    <div id="searchResults" class="mt-4 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"></div>
 </div>
 
-<!-- ==================== HERO SECTION ==================== -->
-<section id="hero" class="hero-backdrop" style="background-image: url('https://image.tmdb.org/t/p/original/8kX0Q6jPWhb6CjIB08tA0ZzWd9L.jpg');">
-    <div class="hero-content">
-        <div class="animate-slide-up">
-            <h1 class="hero-title" id="heroTitle">Cinematic Experience</h1>
-            <div class="hero-meta" id="heroMeta">
-                <span><i class="fas fa-star" style="color: #f5c518;"></i> 8.7</span>
-                <span><i class="fas fa-calendar-alt"></i> 2024</span>
-                <span><span class="badge">HD</span></span>
-                <span>2h 30m</span>
+<!-- ============================================================
+APP ROOT
+============================================================ -->
+<div id="appRoot">
+
+    <!-- ========== NAVBAR ========== -->
+    <nav class="navbar">
+        <div class="brand">
+            <i class="fas fa-play-circle"></i> FLIXER
+        </div>
+
+        <div class="nav-center">
+            <button class="nav-btn active" id="nav-trending" onclick="changeCategory('trending')">Trending</button>
+            <button class="nav-btn" id="nav-movies" onclick="changeCategory('movie')">Movies</button>
+            <button class="nav-btn" id="nav-tv" onclick="changeCategory('tv')">TV & Anime</button>
+        </div>
+
+        <div class="nav-right">
+            <div class="user-display" id="userDisplayHeader">
+                <span class="avatar" id="userAvatar">A</span>
+                <span id="usernameDisplayHeader">admin</span>
             </div>
-            <p class="hero-synopsis" id="heroSynopsis">
-                Experience the ultimate cinematic journey with ad-free streaming, 
-                stunning visuals, and immersive storytelling.
-            </p>
+            <button class="logout-btn" id="logoutBtnHeader" onclick="logout()" title="Logout">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+            <div class="search-icon-wrapper">
+                <button class="search-toggle" id="search-toggle-btn" onclick="toggleSearchBox()">
+                    <i class="fas fa-search"></i>
+                </button>
+                <div class="search-box-wrapper" id="searchBoxWrapper">
+                    <input type="text" id="search-input" placeholder="Search Movies, Anime, Drama..." onkeydown="handleSearch(event)" />
+                    <ul id="search-suggestions"></ul>
+                </div>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleSidePanel()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ========== SIDE PANEL ========== -->
+    <div id="sideOverlay" onclick="closeSidePanel()"></div>
+    <div id="sidePanel">
+        <div class="side-brand"><i class="fas fa-play-circle"></i> FLIXER</div>
+        <div class="side-user" id="sideUserInfo">
+            <span class="avatar" id="sideAvatar">A</span>
+            <span class="name" id="sideUsernameDisplay">admin</span>
+            <button class="logout-mobile" id="mobileLogoutBtn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+        <div class="side-item" onclick="goHome()"><i class="fas fa-home"></i> <span id="label-home">Home</span></div>
+        <div class="side-item" onclick="changeCategory('trending')"><i class="fas fa-fire"></i> <span>Trending</span></div>
+        <div class="side-item" onclick="changeCategory('movie')"><i class="fas fa-film"></i> <span>Movies</span></div>
+        <div class="side-item" onclick="changeCategory('tv')"><i class="fas fa-tv"></i> <span>TV & Anime</span></div>
+        <div class="side-item" onclick="toggleLanguagePanel()"><i class="fas fa-globe"></i> <span id="label-language">Language</span></div>
+        <div class="side-item" onclick="toggleMode()"><i class="fas fa-moon" id="mode-icon-side"></i> <span id="label-mode">Mode</span></div>
+        <div class="side-item" onclick="showDownload()"><i class="fas fa-download"></i> <span id="label-download">Download</span></div>
+        <div class="side-item" onclick="showAboutUs()"><i class="fas fa-info-circle"></i> <span id="label-aboutus">About Us</span></div>
+    </div>
+
+    <!-- ========== LANGUAGE PANEL ========== -->
+    <div id="langOverlay" onclick="closeLanguagePanel()"></div>
+    <div id="langPanel">
+        <div class="lang-header">
+            <h3 id="label-select-language">🌐 Select Language</h3>
+            <button class="close-lang" onclick="closeLanguagePanel()">✕</button>
+        </div>
+        <input class="lang-search" id="langSearch" placeholder="Search language..." oninput="filterLanguages(event)" />
+        <ul id="lang-list"></ul>
+        <div class="lang-note" id="lang-note">📌 Titles auto-translate when available.</div>
+    </div>
+
+    <!-- ========== DOWNLOAD MODAL ========== -->
+    <div id="downloadModal" onclick="if(event.target===this) closeDownload()">
+        <div class="download-content">
+            <div class="download-header">
+                <h3>📲 FLIXER App</h3>
+                <button class="close-download" onclick="closeDownload()">✕</button>
+            </div>
+            <div class="download-list" id="download-list"></div>
+        </div>
+    </div>
+
+    <!-- ========== ABOUT MODAL ========== -->
+    <div id="aboutModal" onclick="if(event.target===this) closeAboutUs()">
+        <div class="about-content">
+            <div class="about-header">
+                <h3>📖 About FLIXER</h3>
+                <button class="close-about" onclick="closeAboutUs()">✕</button>
+            </div>
+            <div id="about-body-content"></div>
+        </div>
+    </div>
+
+    <!-- ========== HERO BANNER ========== -->
+    <section id="hero-banner">
+        <div class="hero-content">
+            <span class="hero-tag" id="banner-tag">MOVIE</span>
+            <h1 id="banner-title">Loading...</h1>
+            <div class="hero-cast" id="banner-cast">—</div>
+            <p class="hero-desc" id="banner-desc">Loading description...</p>
             <div class="hero-actions">
-                <button class="btn-primary" onclick="playFeatured()">
+                <button class="btn-primary" onclick="openPlayerView()">
                     <i class="fas fa-play"></i> Watch Now
                 </button>
                 <button class="btn-secondary" onclick="addToList()">
@@ -672,610 +167,106 @@
                 </button>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- ==================== CONTENT SECTIONS ==================== -->
-<div id="content" style="margin-top: -4rem; position: relative; z-index: 3;">
-
-    <!-- Trending Section -->
-    <div class="carousel-container">
-        <h2 class="carousel-title">🔥 Trending Now</h2>
-        <div class="carousel-track" id="trendingCarousel"></div>
-    </div>
-
-    <!-- Movies Section -->
-    <div class="carousel-container">
-        <h2 class="carousel-title">🎬 Popular Movies</h2>
-        <div class="carousel-track" id="moviesCarousel"></div>
-    </div>
-
-    <!-- TV Shows Section -->
-    <div class="carousel-container">
-        <h2 class="carousel-title">📺 Top TV Shows</h2>
-        <div class="carousel-track" id="tvCarousel"></div>
-    </div>
-
-</div>
-
-<!-- ==================== VIDEO PLAYER ==================== -->
-<div class="player-container" id="playerContainer">
-    <div class="player-wrapper">
-        <button class="close-player" onclick="closePlayer()">
-            <i class="fas fa-times"></i>
-        </button>
-        <div id="playerElement"></div>
-    </div>
-</div>
-
-<!-- ==================== SCRIPTS ==================== -->
-<script src="https://cdn.jsdelivr.net/npm/hls.js@0.14.17/dist/hls.min.js"></script>
-<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
-
-<script>
-// ==================== CONFIGURATION ====================
-const API_BASE = window.location.origin || 'http://localhost:3000';
-const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
-const TMDB_IMAGE_ORIGINAL = 'https://image.tmdb.org/t/p/original';
-
-let currentPlayer = null;
-let currentStreamData = null;
-let searchTimeout = null;
-let featuredContent = null;
-
-// ==================== API FUNCTIONS ====================
-async function fetchTrending() {
-    try {
-        const response = await axios.get(`${API_BASE}/api/trending?time_window=week&media_type=all`);
-        return response.data.results || [];
-    } catch (error) {
-        console.error('Failed to fetch trending:', error);
-        return [];
-    }
-}
-
-async function fetchMovies() {
-    try {
-        const response = await axios.get(`${API_BASE}/api/trending?time_window=week&media_type=movie`);
-        return response.data.results || [];
-    } catch (error) {
-        console.error('Failed to fetch movies:', error);
-        return [];
-    }
-}
-
-async function fetchTVShows() {
-    try {
-        const response = await axios.get(`${API_BASE}/api/trending?time_window=week&media_type=tv`);
-        return response.data.results || [];
-    } catch (error) {
-        console.error('Failed to fetch TV shows:', error);
-        return [];
-    }
-}
-
-async function fetchMovieDetails(id) {
-    try {
-        const response = await axios.get(`${API_BASE}/api/movie/${id}`);
-        return response.data;
-    } catch (error) {
-        console.error('Failed to fetch movie details:', error);
-        return null;
-    }
-}
-
-async function fetchTVDetails(id) {
-    try {
-        const response = await axios.get(`${API_BASE}/api/tv/${id}`);
-        return response.data;
-    } catch (error) {
-        console.error('Failed to fetch TV details:', error);
-        return null;
-    }
-}
-
-async function searchContent(query) {
-    try {
-        const response = await axios.get(`${API_BASE}/api/search?query=${encodeURIComponent(query)}&type=multi`);
-        return response.data.results || [];
-    } catch (error) {
-        console.error('Search failed:', error);
-        return [];
-    }
-}
-
-async function getStream(tmdbId, type = 'movie', season = null, episode = null) {
-    try {
-        const response = await axios.post(`${API_BASE}/api/stream`, {
-            tmdbId,
-            type,
-            season,
-            episode
-        });
-        return response.data;
-    } catch (error) {
-        console.error('Failed to get stream:', error);
-        return null;
-    }
-}
-
-// ==================== UI FUNCTIONS ====================
-function createCarouselItem(item, type = 'movie') {
-    const posterPath = item.poster_path || item.backdrop_path;
-    const title = item.title || item.name || 'Untitled';
-    const releaseDate = item.release_date || item.first_air_date || '';
-    const year = releaseDate ? releaseDate.substring(0, 4) : '';
-    const rating = item.vote_average ? item.vote_average.toFixed(1) : 'N/A';
-    const id = item.id;
-    
-    const div = document.createElement('div');
-    div.className = 'carousel-item';
-    div.innerHTML = `
-        <img 
-            src="${posterPath ? TMDB_IMAGE_BASE + posterPath : 'https://via.placeholder.com/500x750/1a1a1a/ffffff?text=No+Image'}" 
-            alt="${title}"
-            loading="lazy"
-            onerror="this.src='https://via.placeholder.com/500x750/1a1a1a/ffffff?text=No+Image'"
-        />
-        <div class="item-info">
-            <h4>${title}</h4>
-            <p>${year} • ⭐ ${rating}</p>
+    <!-- ========== MEDIA CONTAINER ========== -->
+    <div class="media-container">
+        <div class="section-header">
+            <h2 id="section-title">Trending Today</h2>
+            <span class="view-all" id="label-recommended">Recommended for you</span>
         </div>
-    `;
-    
-    div.addEventListener('click', () => {
-        if (type === 'movie') {
-            loadMovie(id);
-        } else {
-            loadTVShow(id);
-        }
-    });
-    
-    return div;
-}
+        <div id="media-grid-items"></div>
+    </div>
 
-function renderCarousel(containerId, items, type = 'movie') {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    
-    container.innerHTML = '';
-    
-    if (!items || items.length === 0) {
-        container.innerHTML = '<p style="color: var(--text-secondary); padding: 1rem;">No content available</p>';
-        return;
-    }
-    
-    // Limit to 20 items for performance
-    const limitedItems = items.slice(0, 20);
-    
-    limitedItems.forEach(item => {
-        const element = createCarouselItem(item, type);
-        container.appendChild(element);
-    });
-}
-
-function updateHero(content) {
-    if (!content) return;
-    
-    const backdrop = content.backdrop_path || content.poster_path;
-    if (backdrop) {
-        document.getElementById('hero').style.backgroundImage = 
-            `url('${TMDB_IMAGE_ORIGINAL + backdrop}')`;
-    }
-    
-    document.getElementById('heroTitle').textContent = content.title || content.name || 'Untitled';
-    
-    const rating = content.vote_average ? content.vote_average.toFixed(1) : 'N/A';
-    const year = (content.release_date || content.first_air_date || '').substring(0, 4);
-    const runtime = content.runtime ? `${content.runtime}m` : '';
-    
-    document.getElementById('heroMeta').innerHTML = `
-        <span><i class="fas fa-star" style="color: #f5c518;"></i> ${rating}</span>
-        <span><i class="fas fa-calendar-alt"></i> ${year}</span>
-        ${content.media_type === 'tv' ? '<span><span class="badge">TV Series</span></span>' : '<span><span class="badge">HD</span></span>'}
-        ${runtime ? `<span>${runtime}</span>` : ''}
-    `;
-    
-    document.getElementById('heroSynopsis').textContent = 
-        content.overview || 'No synopsis available.';
-    
-    featuredContent = content;
-}
-
-async function loadMovie(id) {
-    try {
-        const details = await fetchMovieDetails(id);
-        if (!details) {
-            showToast('Failed to load movie details');
-            return;
-        }
-        
-        updateHero(details);
-        
-        // Get stream
-        const streamData = await getStream(id, 'movie');
-        if (streamData && streamData.success) {
-            currentStreamData = streamData;
-            playStream(streamData.bestStream.url);
-        } else {
-            showToast('No streams available for this movie');
-        }
-        
-    } catch (error) {
-        console.error('Error loading movie:', error);
-        showToast('Failed to load movie');
-    }
-}
-
-async function loadTVShow(id) {
-    try {
-        const details = await fetchTVDetails(id);
-        if (!details) {
-            showToast('Failed to load TV show details');
-            return;
-        }
-        
-        updateHero(details);
-        
-        // Show season/episode selector
-        showEpisodeSelector(details);
-        
-    } catch (error) {
-        console.error('Error loading TV show:', error);
-        showToast('Failed to load TV show');
-    }
-}
-
-function showEpisodeSelector(tvDetails) {
-    // Create episode selector modal
-    const modal = document.createElement('div');
-    modal.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0,0,0,0.9);
-        z-index: 999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
-        backdrop-filter: blur(20px);
-    `;
-    
-    const content = document.createElement('div');
-    content.className = 'glass';
-    content.style.cssText = `
-        max-width: 800px;
-        width: 100%;
-        max-height: 80vh;
-        padding: 2rem;
-        overflow-y: auto;
-    `;
-    
-    let seasonsHTML = '';
-    if (tvDetails.seasons) {
-        const seasons = tvDetails.seasons.filter(s => s.season_number > 0);
-        seasonsHTML = seasons.map(season => `
-            <button class="episode-btn" onclick="loadEpisode(${tvDetails.id}, ${season.season_number}, 1)">
-                Season ${season.season_number}
-                <small style="display:block;font-size:0.7rem;color:var(--text-muted);">
-                    ${season.episode_count} episodes
-                </small>
-            </button>
-        `).join('');
-    }
-    
-    content.innerHTML = `
-        <h2 style="margin-bottom: 1rem;">${tvDetails.name}</h2>
-        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Select a season to start watching</p>
-        <div class="episode-grid">
-            ${seasonsHTML}
-        </div>
-        <button onclick="this.closest('div[style]').remove()" style="
-            margin-top: 1.5rem;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 0.9rem;
-        ">
-            <i class="fas fa-times"></i> Close
+    <!-- ========== DETAIL VIEW ========== -->
+    <div id="detailView">
+        <button class="detail-back" onclick="closeDetail()">
+            <i class="fas fa-arrow-left"></i> <span id="label-detail-back">Back</span>
         </button>
-    `;
-    
-    modal.appendChild(content);
-    document.body.appendChild(modal);
-}
-
-async function loadEpisode(tvId, season, episode) {
-    try {
-        // Close episode selector
-        const modal = document.querySelector('div[style*="fixed"][style*="z-index: 999"]');
-        if (modal) modal.remove();
-        
-        const streamData = await getStream(tvId, 'tv', season, episode);
-        if (streamData && streamData.success) {
-            currentStreamData = streamData;
-            playStream(streamData.bestStream.url);
-        } else {
-            showToast('No streams available for this episode');
-        }
-    } catch (error) {
-        console.error('Error loading episode:', error);
-        showToast('Failed to load episode');
-    }
-}
-
-function playStream(url) {
-    const container = document.getElementById('playerContainer');
-    container.classList.add('active');
-    document.body.style.overflow = 'hidden';
-    
-    const playerElement = document.getElementById('playerElement');
-    playerElement.innerHTML = `
-        <video id="videoPlayer" controls crossorigin playsinline preload="metadata">
-            <source src="${url}" type="application/vnd.apple.mpegurl" />
-        </video>
-    `;
-    
-    // Initialize Plyr
-    const video = document.getElementById('videoPlayer');
-    
-    // Check if HLS.js is supported
-    if (Hls.isSupported()) {
-        const hls = new Hls({
-            enableWorker: true,
-            lowLatencyMode: true,
-            backbufferLength: 30,
-            maxBufferLength: 30,
-            maxMaxBufferLength: 600,
-            startLevel: -1, // Auto
-            capLevelToPlayerSize: true
-        });
-        
-        hls.loadSource(url);
-        hls.attachMedia(video);
-        
-        currentPlayer = new Plyr(video, {
-            controls: [
-                'play-large', 'play', 'progress', 'current-time', 'duration',
-                'mute', 'volume', 'captions', 'settings', 'pip', 'fullscreen'
-            ],
-            settings: ['quality', 'speed', 'loop'],
-            quality: {
-                default: 0,
-                options: ['auto', 1080, 720, 480, 360]
-            },
-            speed: {
-                selected: 1,
-                options: [0.5, 0.75, 1, 1.25, 1.5, 2]
-            },
-            keyboard: { focused: true, global: true },
-            tooltips: { controls: true, seek: true },
-            captions: { active: false, update: true },
-            fullscreen: { enabled: true, fallback: true, iosNative: true }
-        });
-        
-        // Auto-play
-        video.play().catch(e => console.log('Auto-play prevented:', e));
-        
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        // Native HLS support (Safari)
-        video.src = url;
-        currentPlayer = new Plyr(video, {
-            controls: ['play-large', 'play', 'progress', 'current-time', 'duration', 'mute', 'volume', 'fullscreen'],
-            keyboard: { focused: true, global: true }
-        });
-        video.play().catch(e => console.log('Auto-play prevented:', e));
-    } else {
-        showToast('Your browser does not support HLS streaming');
-    }
-}
-
-function closePlayer() {
-    const container = document.getElementById('playerContainer');
-    container.classList.remove('active');
-    document.body.style.overflow = '';
-    
-    if (currentPlayer) {
-        currentPlayer.destroy();
-        currentPlayer = null;
-    }
-    
-    document.getElementById('playerElement').innerHTML = '';
-}
-
-function playFeatured() {
-    if (featuredContent) {
-        if (featuredContent.media_type === 'tv' || featuredContent.first_air_date) {
-            loadTVShow(featuredContent.id);
-        } else {
-            loadMovie(featuredContent.id);
-        }
-    } else {
-        showToast('No featured content available');
-    }
-}
-
-function addToList() {
-    showToast('Added to your list! ❤️');
-}
-
-function toggleSearch() {
-    const container = document.getElementById('searchContainer');
-    const isVisible = container.style.display !== 'none';
-    container.style.display = isVisible ? 'none' : 'block';
-    if (!isVisible) {
-        document.getElementById('searchInput').focus();
-    }
-}
-
-function handleSearch(query) {
-    clearTimeout(searchTimeout);
-    const resultsContainer = document.getElementById('searchResults');
-    
-    if (query.length < 2) {
-        resultsContainer.innerHTML = '';
-        return;
-    }
-    
-    searchTimeout = setTimeout(async () => {
-        try {
-            resultsContainer.innerHTML = `
-                <div style="grid-column: 1/-1; text-align: center; padding: 2rem;">
-                    <div class="spinner" style="margin: 0 auto;"></div>
+        <div class="detail-grid">
+            <div class="detail-poster">
+                <img id="detailPoster" src="" alt="Poster" />
+            </div>
+            <div class="detail-info">
+                <div class="detail-type" id="detailType">MOVIE</div>
+                <h1 id="detailTitle">Title</h1>
+                <div class="detail-meta">
+                    <span><i class="fas fa-star" style="color:#ffd700;"></i> <span id="detailRating">0.0</span></span>
+                    <span><i class="fas fa-clock"></i> <span id="detailRuntime">—</span></span>
+                    <span><i class="fas fa-calendar-alt"></i> <span id="detailRelease">—</span></span>
                 </div>
-            `;
-            
-            const results = await searchContent(query);
-            
-            if (results.length === 0) {
-                resultsContainer.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-secondary);">
-                        <i class="fas fa-search" style="font-size: 2rem; display: block; margin-bottom: 1rem;"></i>
-                        No results found for "${query}"
+                <p class="detail-overview" id="detailOverview">No overview available.</p>
+                <div class="detail-genres" id="detailGenres"></div>
+                <div class="detail-director" id="detailDirector"></div>
+                <div class="detail-actions">
+                    <button class="btn-watch" onclick="openPlayerView()">
+                        <i class="fas fa-play"></i> <span id="label-watchnow-detail">Watch Now</span>
+                    </button>
+                    <button class="btn-list" onclick="addToList()">
+                        <i class="fas fa-plus"></i> My List
+                    </button>
+                </div>
+                <div class="detail-trailer">
+                    <h3 id="label-detail-trailer">🎬 Trailer</h3>
+                    <div class="trailer-wrapper" id="detailTrailerWrapper">
+                        <p class="empty-note">Loading trailer...</p>
                     </div>
-                `;
-                return;
-            }
-            
-            resultsContainer.innerHTML = '';
-            results.slice(0, 12).forEach(item => {
-                if (!item.poster_path) return;
-                const element = createCarouselItem(item, item.media_type || 'movie');
-                resultsContainer.appendChild(element);
-            });
-            
-        } catch (error) {
-            console.error('Search error:', error);
-            resultsContainer.innerHTML = `
-                <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-secondary);">
-                    <i class="fas fa-exclamation-circle" style="font-size: 2rem; display: block; margin-bottom: 1rem;"></i>
-                    Search failed. Please try again.
                 </div>
-            `;
-        }
-    }, 400);
-}
+            </div>
+        </div>
+        <div class="detail-cast-section">
+            <h3 id="label-detail-cast">🎭 Top Cast</h3>
+            <div class="detail-cast" id="detailCast"></div>
+        </div>
+        <div id="recommendedSection">
+            <h3>✨ You Might Also Like</h3>
+            <div id="recommendedGrid"></div>
+        </div>
+    </div>
 
-function showToast(message) {
-    const toast = document.createElement('div');
-    toast.style.cssText = `
-        position: fixed;
-        bottom: 2rem;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(0,0,0,0.9);
-        color: white;
-        padding: 0.75rem 2rem;
-        border-radius: 8px;
-        border: 1px solid rgba(255,255,255,0.1);
-        z-index: 9999;
-        backdrop-filter: blur(10px);
-        animation: slideUp 0.3s ease;
-        font-size: 0.95rem;
-    `;
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateX(-50%) translateY(20px)';
-        toast.style.transition = 'all 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
-}
+    <!-- ========== PLAYER VIEW ========== -->
+    <div id="playerView">
+        <div class="player-header">
+            <button class="player-back" onclick="closePlayerView()">
+                <i class="fas fa-arrow-left"></i> <span id="label-player-back">Back</span>
+            </button>
+            <span class="player-title" id="playerTitle">Loading...</span>
+            <span class="player-release" id="playerRelease">Released: <span>—</span></span>
+            <div class="player-actions">
+                <button id="playerFavBtn"><i class="far fa-heart"></i></button>
+                <button id="playerShareBtn"><i class="fas fa-share-alt"></i></button>
+                <button id="playerDownloadBtn"><i class="fas fa-download"></i></button>
+                <button id="playerReportBtn"><i class="fas fa-flag"></i></button>
+            </div>
+        </div>
+        <div class="player-body">
+            <div class="player-trailer-wrapper" id="playerTrailerWrapper">
+                <p class="empty-note">Loading stream...</p>
+            </div>
+            <div id="failoverOverlay"></div>
+        </div>
+        <div class="player-episode-info" id="playerEpisodeInfo">
+            <span id="episodeUpdateText">📺 Next episode updates</span>
+            <span class="episode-timer" id="episodeTimer">⏱️ Loading...</span>
+        </div>
+        <div class="player-episode-section" id="playerEpisodeSection">
+            <div class="episode-header">
+                <h4>📺 Episodes</h4>
+                <span id="playerEpTotal">0</span>
+            </div>
+            <div class="episode-grid" id="playerEpisodeGrid"></div>
+        </div>
+        <div class="player-movie-message" id="playerMovieMessage">
+            <p>🎬 This is a movie — no episode list available.</p>
+        </div>
+    </div>
 
-// ==================== CAROUSEL NAVIGATION ====================
-function scrollCarousel(containerId, direction) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    const scrollAmount = container.clientWidth * 0.8;
-    container.scrollBy({
-        left: direction * scrollAmount,
-        behavior: 'smooth'
-    });
-}
+</div>
 
-// Add navigation buttons to carousels
-document.querySelectorAll('.carousel-container').forEach(container => {
-    const track = container.querySelector('.carousel-track');
-    if (!track) return;
-    
-    const leftBtn = document.createElement('button');
-    leftBtn.className = 'carousel-btn left';
-    leftBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
-    leftBtn.onclick = () => scrollCarousel(track.id || '', -1);
-    
-    const rightBtn = document.createElement('button');
-    rightBtn.className = 'carousel-btn right';
-    rightBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
-    rightBtn.onclick = () => scrollCarousel(track.id || '', 1);
-    
-    container.appendChild(leftBtn);
-    container.appendChild(rightBtn);
-});
-
-// ==================== INITIALIZATION ====================
-async function init() {
-    try {
-        // Load trending content
-        const trending = await fetchTrending();
-        renderCarousel('trendingCarousel', trending, 'movie');
-        
-        // Load movies
-        const movies = await fetchMovies();
-        renderCarousel('moviesCarousel', movies, 'movie');
-        
-        // Load TV shows
-        const tvShows = await fetchTVShows();
-        renderCarousel('tvCarousel', tvShows, 'tv');
-        
-        // Set featured content from trending
-        if (trending.length > 0) {
-            const featured = trending[Math.floor(Math.random() * Math.min(trending.length, 5))];
-            updateHero(featured);
-        }
-        
-        console.log('🚀 Cinemastream initialized successfully!');
-        
-    } catch (error) {
-        console.error('Failed to initialize:', error);
-        showToast('Failed to load content. Please refresh the page.');
-    }
-}
-
-// Start the application
-document.addEventListener('DOMContentLoaded', init);
-
-// Keyboard shortcuts
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        closePlayer();
-        const modal = document.querySelector('div[style*="fixed"][style*="z-index: 999"]');
-        if (modal) modal.remove();
-    }
-    
-    if (e.key === '/' && !e.ctrlKey && !e.metaKey) {
-        e.preventDefault();
-        toggleSearch();
-    }
-});
-
-// Close player on outside click
-document.getElementById('playerContainer').addEventListener('click', (e) => {
-    if (e.target === e.currentTarget) {
-        closePlayer();
-    }
-});
-
-console.log('🎬 Cinemastream - Premium Streaming Platform');
-console.log('📺 Built with ❤️ by AI Engineer');
-console.log('🚀 Ready for production!');
-</script>
+<!-- ============================================================
+SCRIPTS
+============================================================ -->
+<script src="script.js"></script>
 
 </body>
 </html>
