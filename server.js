@@ -11,7 +11,7 @@ const crypto = require('crypto');
 // ==================== CONFIGURATION ====================
 const app = express();
 const PORT = process.env.PORT || 3000;
-const TMDB_API_KEY = process.env.TMDB_API_KEY || 'YOUR_TMDB_API_KEY_HERE';
+const TMDB_API_KEY = process.env.TMDB_API_KEY || '74cbc0752e0a36fdac6657bb206f0bec';
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 
 // Redis Cache Configuration
