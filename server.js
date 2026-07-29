@@ -53,7 +53,7 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-// ==================== STREAMING PROVIDERS (UPDATED) ====================
+// ==================== STREAMING PROVIDERS ====================
 const STREAM_PROVIDERS = [
     {
         name: 'VidLink',
@@ -257,10 +257,8 @@ async function scrapeStreams(tmdbId, season = null, episode = null, type = 'movi
             const html = response.data;
             
             let streamUrl = null;
-            // Try to extract m3u8 first
             streamUrl = extractM3U8FromHTML(html);
             if (!streamUrl) {
-                // If no m3u8, try to get embed URL
                 const embedUrl = extractEmbedURL(html);
                 if (embedUrl) {
                     streamUrl = embedUrl;
