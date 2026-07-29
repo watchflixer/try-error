@@ -10,7 +10,7 @@ const rateLimit = require('express-rate-limit');
 // ==================== CONFIGURATION ====================
 const app = express();
 const PORT = process.env.PORT || 3000;
-const TMDB_API_KEY = process.env.TMDB_API_KEY; // ✅ TINANGGAL ANG HARDCODED KEY
+const TMDB_API_KEY = process.env.TMDB_API_KEY;
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 
 // Redis Cache Configuration
